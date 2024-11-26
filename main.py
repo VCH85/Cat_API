@@ -16,11 +16,16 @@ def load_image(url):
         print(f"Ошибка {e}")
         return None
 
-def set_image():
-    img = load_image(url)
-
+def open_new_window():
+    tag = tag_entry.get()
+    url_tag = f"https://cataas.com/cat/{tag}" if tag else "https://cataas.com/cat"
+    img = load_image(url_tag)
     if img:
-        label.config(image = img)
+        new_window = Toplevel()
+        new_window.title("Котик")
+        new_window.geometry("600x480")
+        label = Label(new_window, image= img)
+        label.pack()
         label.image = img
 
 def exit():
@@ -29,19 +34,22 @@ def exit():
 
 window = Tk()
 window.title("Cats")
-window.geometry("600x520")
+window.geometry("200x180")
 
-label= Label()
-label.pack()
-#update_button = Button(text="Котик!", command=set_image)
-#update_button.pack()
+tag_entry = Entry()
+tag_entry.pack()
+
+load_button = Button(text = "Загрузить по тегу", command= open_new_window)
+load_button.pack()
+
+
 
 menu_bar = Menu()
 window.config(menu= menu_bar)
 
 file_menu = Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="Файл", menu = file_menu)
-file_menu.add_command(label="Котик!", command=set_image)
+file_menu.add_command(label="Котик!", command=open_new_window)
 file_menu.add_separator()
 file_menu.add_command(label = "Выход", command= exit)
 
@@ -49,7 +57,4 @@ file_menu.add_command(label = "Выход", command= exit)
 url = "https://cataas.com/cat"
 img = load_image(url)
 
-
-
-set_image()
 window.mainloop()
